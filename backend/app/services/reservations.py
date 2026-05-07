@@ -2,6 +2,10 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Dict, Any, List
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 async def calculate_monthly_revenue(property_id: str, month: int, year: int, db_session=None) -> Decimal:
     """
     Calculates revenue for a specific month.
@@ -63,6 +67,9 @@ async def calculate_total_revenue(property_id: str, tenant_id: str) -> Dict[str,
                     "tenant_id": tenant_id
                 })
                 row = result.fetchone()
+                logger.info("✅ Revenue data for property %s (tenant: %s): %s", property_id, tenant_id, row)
+
+                logging.info("✅ Raw DB result for property %s ", str(row.total_revenue))
                 
                 if row:
                     total_revenue = Decimal(str(row.total_revenue))
