@@ -67,9 +67,10 @@ async def calculate_total_revenue(property_id: str, tenant_id: str) -> Dict[str,
                     "tenant_id": tenant_id
                 })
                 row = result.fetchone()
-                logger.info("✅ Revenue data for property %s (tenant: %s): %s", property_id, tenant_id, row)
+                print(f"DEBUG: Raw DB result for property {property_id} (tenant: {tenant_id}): {row}")
 
-                logging.info("✅ Raw DB result for property %s ", str(row.total_revenue))
+                print(f"DEBUG: Type of DB result row: {row.total_revenue}")
+                print(f"DEBUG: Type of DB result row: {Decimal(str(row.total_revenue))}")
                 
                 if row:
                     total_revenue = Decimal(str(row.total_revenue))
@@ -98,11 +99,11 @@ async def calculate_total_revenue(property_id: str, tenant_id: str) -> Dict[str,
         # Create property-specific mock data for testing when DB is unavailable
         # This ensures each property shows different figures
         mock_data = {
-            'prop-001': {'total': '1000.00', 'count': 3},
+            'prop-001': {'total': '1000.001', 'count': 3},
             'prop-002': {'total': '4975.50', 'count': 4}, 
             'prop-003': {'total': '6100.50', 'count': 2},
             'prop-004': {'total': '1776.50', 'count': 4},
-            'prop-005': {'total': '3256.00', 'count': 3}
+            'prop-005': {'total': '3256.03', 'count': 3}
         }
         
         mock_property_data = mock_data.get(property_id, {'total': '0.00', 'count': 0})
